@@ -1,4 +1,5 @@
-//test JSON
+
+/**************** Test JSON ************************************/
 
 [{
     "Item": {
@@ -50,7 +51,8 @@
     }
 }]
 
-/**************** Loop through nested json with php ************************************/m
+/**************** Loop through nested json with php ************************************/
+
 <?php
 foreach($JSON as $item)
 {
@@ -68,5 +70,4 @@ foreach($JSON as $item)
         echo $item->segment->transaction. '<br>';
     }
 }
-
 ?>
