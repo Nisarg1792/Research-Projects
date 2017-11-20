@@ -1,0 +1,29 @@
+/** Number of Ways to hide element with CSS **/
+
+1) display: none;
+
+2) visibility: hidden;
+ 
+3) opacity: 0;
+
+4) Use the z-index property, with margins.
+	z-index: 1000;
+	margin: -100px;
+
+5) Use the left (or right) property.
+	left: -9999px;
+	position: relative;
+
+6) Use the left (or right) property, with the position: absolute property.
+	left: -9999px;
+	position: absolute;
+
+7) Use the transform property.
+	transform: translateX(-9999px);
+
+8) Use the clip property.
+	clip:rect(0px, 0px, 0px, 0px);
+
+9) {width:0; height:0; overflow:hidden;} <-- this will definately work
+
+10) transform: scale(0);
