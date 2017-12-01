@@ -1,47 +1,52 @@
 // basic fundametals understanding php
+
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
 #1
 $this is a reserved variable name and can not be used for anything else. 
 It specifically points you to the object your are currently working in. 
 You have to use $this because you do not know what variable object will be assigned to.
 
-$this->name refers to the current class's variable name
-$this->$name refers to the class variable of whatever the value of $name is. 
+      $this->name refers to the current class's variable name
+      $this->$name refers to the class variable of whatever the value of $name is. 
 
-$name = "name";
-echo $this->$name; // echos the value of $this->name.
+            $name = "name";
+            echo $this->$name; // echos the value of $this->name.
 
-$name = "test";
-echo $this->$name;  // echos the value of $this->test
+            $name = "test";
+            echo $this->$name;  // echos the value of $this->test
 
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
 
 #2
 You can access member variables in an object using another variable as name: 
 
-<?php 
-$element = 'Nisarg'; 
-print $foo->$element; // prints "Nisarg Member Variable" 
-?> 
+    <?php 
+      $element = 'Nisarg'; 
+      print $foo->$element; // prints "Nisarg Member Variable" 
+    ?> 
 
 or use functions: 
 
-<?php 
-function getVarName() 
-{ return 'Nisarg'; } 
+    <?php 
+      function getVarName() 
+      { return 'Nisarg'; } 
 
-print $foo->{getVarName()}; // prints "Nisarg Member Variable" 
-?
+      print $foo->{getVarName()}; // prints "Nisarg Member Variable" 
+     ?>
 
 <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
 
+#3 Which Snippet is Faster ??
 
+Snippet 1:
+     $this->__hash = isset($_GET['hash'])?$_GET['hash']:null;
 
-
-
-
-
-
-
-
-
+Snippet 2:
+	if(isset($_GET['hash'])) { 
+	   $this->__hash =  $_GET['hash'];
+	} else{
+	   $this->__hash =  null;
+	}
+	
+Sometimes, Snipper 2
+<!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
