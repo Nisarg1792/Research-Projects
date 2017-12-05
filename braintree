@@ -270,54 +270,29 @@ app.post("/save-subscription", function (req, res) {
                                                         function(err, result) {
                                                            if(!err) {
                                                                if(result.result.nModified < 1) {
-
                                                                     console.log('Failed to update subscription for userid : ' + savedNewUser.ops[0]._id.toString() + ' | ' + JSON.stringify(subscription));
-
                                                                 }                            
-
                                                             } else {
-
-                                                                console.dir(err);
-
+                                                               console.dir(err);
                                                             } 
-
                                                     });	                                                    
-
                                                     res.jsonp({status:200,text:'Thanks for subscribing to our amazing service :D'});
-
                                                 } else {
-
                                                     console.dir(err);
-
                                                     res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});
-
-                                                }
-
+                                               }
                                         });	                                                               
-
                                     } else {
-
                                         console.dir(err);
-
                                         res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});
-
                                     }
-
                                 });
-
                             } else {
-
                                 res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});
-                            }
-                            
+                            }                            
                         });                        
-
-                    } 
-
-            });	
-
-        }
-
-    });
-
-});
+                     } 
+            	});	
+             }
+        });
+   });
