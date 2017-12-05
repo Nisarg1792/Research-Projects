@@ -101,17 +101,12 @@ var createBraintreeSubscriptionAndUpdateDb = function(paymentMethodToken, subscr
 *
 ***********************************************/
 app.get("/client_token", function (req, res) {
-
   gateway.clientToken.generate({}, function (err, response) {
-  
     res.send(response.clientToken);
-    
   });
-  
 });
 
 app.post("/save-subscription", function (req, res) {
-
 	var name = req.body.name, 
         email = req.body.email, 
         subscriptionPlanId = req.body.subscriptionPlanId,
@@ -119,22 +114,15 @@ app.post("/save-subscription", function (req, res) {
     
     // check if email exist
     dbCollectionsUser.findOne({email:email}, {email:1,subscription:1},function(err, user) {
-
-        if(user) { // exisiting user in your database
-            
+        if(user) { 			// exisiting user in your database
             var userSubsciptionExistInDb = false;
-            
             if(user.subscription) {
-
                 userSubsciptionExistInDb = true;
-
             }            
-            
+	    
             // check if this user is also one of your customer in braintree
             gateway.customer.find(user._id.toString(), function(err, customer) {               
-
                 if(customer) { // customer already exist in your braintree account
-                    
                     var userSubsciptionExistInBraintree = false, paymentMethodToken;
 
                     for(var i = 0;i<customer.creditCards.length;i++){
