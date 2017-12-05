@@ -33,16 +33,12 @@ if(!err) {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Accept');
 	next();
 };
-
 app.use(allowCrossDomain);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 server = app.listen(8008, function () {
-
   console.log('Your Node.js app listening at port 8008');
-  
 });
 
 /******************************************************
@@ -52,81 +48,52 @@ server = app.listen(8008, function () {
 *
 ******************************************************/
 var createBraintreeSubscriptionAndUpdateDb = function(paymentMethodToken, subscriptionPlanId, userid, userSubsciptionExistInDb, callback) {
-
-    gateway.subscription.create({
+   gateway.subscription.create({
             paymentMethodToken: paymentMethodToken,
             planId: subscriptionPlanId,
             merchantAccountId: 'merchantAccountIdUSD'
         //firstBillingDate: '2015-10-02'
         }, 
-        function (err, result) {
-        
+        function (err, result) {    
             if(!err && result.success) {
-
                 var subscription = {
-
                     id:result.subscription.id,
                     planid:subscriptionPlanId,
                     date_subscribed:new Date()
-
                 };
-                
+		
                 var updateStatement = {$push:{subscription:subscription}};
-                
                 if(!userSubsciptionExistInDb) {
-                    
                     var arr = [];
-                    
                     arr.push(subscription);
-                    
                     updateStatement = {$set:{subscription:arr}};
-                    
                 }
-
+		
                 // update your database
                 dbCollectionsUser.update(
                     {_id:userid},
                     updateStatement, 
                     {w:1}, 
                     function(err, result) {
-
                         if(!err) {
-
                             if(result.result.nModified < 1) {
-
                                 console.log('Failed to update subscription for userid : ' + userid + ' | ' + JSON.stringify(subscription));
-
                             }                            
-
                         } else {
-
                             console.dir(err);
-
                         } 
-                        
                         callback(null);
-
                 });	                        
-
             } else {
-                
                 if(err) {
-                
                     console.dir(err);
-                
                     callback(err);
-                    
-                } else {
-                    
-                    callback('Failed to create subscription for userid : ' + userid + ' | subscriptionPlanId : ' + subscriptionPlanId);
-                    
-                }
-
-            }
-
-    });	    
-    
-}
+                } else {  
+                    callback('Failed to create subscription for userid : ' + userid + ' | subscriptionPlanId : ' + subscriptionPlanId);    
+                       }
+            	}
+   	    });	    
+        }
 
 /***********************************************
 *
