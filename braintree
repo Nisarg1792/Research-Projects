@@ -179,12 +179,10 @@ app.post("/save-subscription", function (req, res) {
                                 res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});  
                             }
                         });
-                        
-                    }
-                    
+                      } 
                 } else { // customer doesn't exist in braintree account but exist in your database
                     
-                    // create this customer in braintree account
+                 // create this customer in braintree account
                     gateway.customer.create({
                       firstName: name,  
                       email: email,
@@ -199,46 +197,27 @@ app.post("/save-subscription", function (req, res) {
                               paymentMethodNonce: nonce
                             }, function (err, resultPaymentMethod) { 
 
-                                if(!err) {
-                                    
+                                if(!err) {       
                                     createBraintreeSubscriptionAndUpdateDb(resultPaymentMethod.paymentMethod.token, subscriptionPlanId, user._id, userSubsciptionExistInDb, function(err){
-
                                         if(!err) {
-
                                             res.jsonp({status:200,text:'Thanks for subscribing to our amazing service :D'});
-
                                         } else {
-
                                             res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});
-
                                         }
-
                                     });                                                                
-
-                                } else {
-                                    
-                                    console.dir(err);
-                                    
-                                    res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});
-                                    
+                                } else {                                   
+                                    console.dir(err);                                    
+                                    res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});                                    
                                 }
-
                             });	                          
-
                         } else { // failed to create customer in braintree account
-
                             res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});
-
                         }
-
-                    });                     
-                                        
+                    });                                                            
                 }
-
             });            
 
         } else { // user doesn't exist in your database and it's a new user
-
             dbCollectionsUser.save(
                 {
                     name:name, 
@@ -247,24 +226,17 @@ app.post("/save-subscription", function (req, res) {
                 }, 
                 {w:1}, 
                 function(err, savedNewUser) {
-
                     if(err) {
-
                         console.dir(err);	
-
                         res.jsonp({status:400,text:'Opps ... there is some problem with our system :('});
-
-                    } else {
-                        
+                    } else {                       
                         // create this new customer in braintree account
                         gateway.customer.create({
                           firstName: name,  
                           email: email,
                           id:savedNewUser.ops[0]._id.toString()
                         }, function (err, customer) {
-
-                            if(customer.success) {	
-                                
+                           if(customer.success) {	                               
                                 // create a payment method for new customer in braintree
                                 gateway.paymentMethod.create({
                                   customerId: savedNewUser.ops[0]._id.toString(),
@@ -280,9 +252,7 @@ app.post("/save-subscription", function (req, res) {
                                             //firstBillingDate: '2016-03-01'
                                             }, 
                                             function (err, result) {
-
-                                                if(!err && result.success) {
-                                                    
+                                                if(!err && result.success) {                                              
                                                     var subscription = {
                                                         
                                                         // save subscription id for querying or cancelling in future
@@ -292,17 +262,14 @@ app.post("/save-subscription", function (req, res) {
 
                                                     }, arr = [];                                                    
                                                     
-                                                    arr.push(subscription);
-                                                    
+                                                    arr.push(subscription);                                                    
                                                     dbCollectionsUser.update(
                                                         {_id:savedNewUser.ops[0]._id},
                                                         {$set:{subscription:arr}}, 
                                                         {w:1}, 
                                                         function(err, result) {
-
-                                                            if(!err) {
-
-                                                                if(result.result.nModified < 1) {
+                                                           if(!err) {
+                                                               if(result.result.nModified < 1) {
 
                                                                     console.log('Failed to update subscription for userid : ' + savedNewUser.ops[0]._id.toString() + ' | ' + JSON.stringify(subscription));
 
