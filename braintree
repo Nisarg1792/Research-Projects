@@ -148,61 +148,36 @@ app.post("/save-subscription", function (req, res) {
                                     paymentMethodToken = customer.paymentMethods[i].token;    
                                     break;    
                                 }
-                                
                             }                             
-                            
-                        }
-                        
+                        }  
                     }
 
                     if(paymentMethodToken) {
-
                         createBraintreeSubscriptionAndUpdateDb(paymentMethodToken, subscriptionPlanId, user._id, userSubsciptionExistInDb, function(err){
-
                             if(!err) {
-
                                 res.jsonp({status:200,text:'Thanks for subscribing to our amazing service :D'});
-
                             } else {
-
                                 res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});
-
                             }
-
-                        });
-                        
-                    } else { // create a new payment method
-                        
+                        });      
+                    } else { // create a new payment method  
                         // create a payment method for new customer in braintree
                         gateway.paymentMethod.create({
                           customerId: user._id.toString(),
                           paymentMethodNonce: nonce
-                        }, function (err, resultPaymentMethod) { 
-                            
-                            if(!err && resultPaymentMethod) {
-                                
+                        }, function (err, resultPaymentMethod) {    
+                            if(!err && resultPaymentMethod) { 
                                 createBraintreeSubscriptionAndUpdateDb(resultPaymentMethod.paymentMethod.token, subscriptionPlanId, user._id, userSubsciptionExistInDb, function(err){
-
                                     if(!err) {
-
                                         res.jsonp({status:200,text:'Thanks for subscribing to our amazing service :D'});
-
                                     } else {
-
                                         res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});
-
                                     }
-
-                                });                                
-                                
-                            } else {
-                                
-                                console.dir(err);
-                                
-                                res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});
-                                
+                                });                                     
+                            } else {  
+                                console.dir(err);  
+                                res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});  
                             }
-
                         });
                         
                     }
