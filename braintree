@@ -124,51 +124,29 @@ app.post("/save-subscription", function (req, res) {
             gateway.customer.find(user._id.toString(), function(err, customer) {               
                 if(customer) { // customer already exist in your braintree account
                     var userSubsciptionExistInBraintree = false, paymentMethodToken;
-
-                    for(var i = 0;i<customer.creditCards.length;i++){
-                        
+                    for(var i = 0;i<customer.creditCards.length;i++){       
                         for(var j = 0;j<customer.creditCards[i].subscriptions.length;j++){
-
                             if(customer.creditCards[i].subscriptions[j].planId === subscriptionPlanId && 
                                     customer.creditCards[i].subscriptions[j].status.toLowerCase() === "active") {
-                                
                                 userSubsciptionExistInBraintree = true;
-                                
-                                break;
-                                
+                                break;       
                             }
-                        
-                        }
-                           
+                        }       
                     }
-                    
-                    if(userSubsciptionExistInBraintree) {
-                        
+	
+		if(userSubsciptionExistInBraintree) {      
                         res.jsonp({status:200,text:'You have already subscribed to our amazing service :D'});
-                        
                         return;                         
-                        
-                    }
-                    
-                    if(customer.paymentMethod && 
-                        !customer.paymentMethod.expired &&
-                         customer.paymentMethod.default) {
-                        
-                        paymentMethodToken = customer.paymentMethod.token;
-                        
-                    } else {
-                        
-                        if(customer.paymentMethods) {
-                            
-                            for(var i = 0;i<customer.paymentMethods.length;i++){
-                                
-                                if(!customer.paymentMethods[i].expired && 
-                                    customer.paymentMethods[i].default) {
-                                    
-                                    paymentMethodToken = customer.paymentMethods[i].token;
-                                    
-                                    break;
-                                    
+               }
+                
+		if(customer.paymentMethod && !customer.paymentMethod.expired && customer.paymentMethod.default) {
+                        paymentMethodToken = customer.paymentMethod.token;   
+                    } else {   
+                        if(customer.paymentMethods) {     
+                            for(var i = 0;i<customer.paymentMethods.length;i++){   
+                                if(!customer.paymentMethods[i].expired && customer.paymentMethods[i].default) { 
+                                    paymentMethodToken = customer.paymentMethods[i].token;    
+                                    break;    
                                 }
                                 
                             }                             
