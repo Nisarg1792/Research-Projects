@@ -151,7 +151,7 @@ app.post("/save-subscription", function (req, res) {
                             }                             
                         }  
                     }
-
+		    
                     if(paymentMethodToken) {
                         createBraintreeSubscriptionAndUpdateDb(paymentMethodToken, subscriptionPlanId, user._id, userSubsciptionExistInDb, function(err){
                             if(!err) {
@@ -188,10 +188,8 @@ app.post("/save-subscription", function (req, res) {
                       email: email,
                       id:user._id.toString()
                     }, function (err, customer) {
-
-                        if(customer.success) {	
-                            
-                            // create a payment method for new customer in braintree
+                        if(customer.success) {	                         
+                    // create a payment method for new customer in braintree
                             gateway.paymentMethod.create({
                               customerId: user._id.toString(),
                               paymentMethodNonce: nonce
@@ -235,22 +233,23 @@ app.post("/save-subscription", function (req, res) {
                           firstName: name,  
                           email: email,
                           id:savedNewUser.ops[0]._id.toString()
+			  
                         }, function (err, customer) {
                            if(customer.success) {	                               
                                 // create a payment method for new customer in braintree
                                 gateway.paymentMethod.create({
                                   customerId: savedNewUser.ops[0]._id.toString(),
                                   paymentMethodNonce: nonce
-                                }, function (err, resultPaymentMethod) { 
-
+				  
+                                }, function (err, resultPaymentMethod) {
                                     if(!err && resultPaymentMethod) {
-
                                         gateway.subscription.create({
                                             paymentMethodToken: resultPaymentMethod.paymentMethod.token,
                                             planId: subscriptionPlanId,
                                             merchantAccountId: 'merchantAccountIdUSD'
                                             //firstBillingDate: '2016-03-01'
                                             }, 
+					    
                                             function (err, result) {
                                                 if(!err && result.success) {                                              
                                                     var subscription = {
@@ -277,6 +276,7 @@ app.post("/save-subscription", function (req, res) {
                                                             } 
                                                     });	                                                    
                                                     res.jsonp({status:200,text:'Thanks for subscribing to our amazing service :D'});
+						 
                                                 } else {
                                                     console.dir(err);
                                                     res.jsonp({status:400,text:'Opps ... there is some problem subscribing you to our amazing service :('});
