@@ -1,0 +1,13 @@
+ Multi Column layout and break down css
+
+/ *************** break-inside ****************************** /
+li {
+-webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+          page-break-inside: avoid; /* Firefox */
+               break-inside: avoid; /* IE 10+ */
+}
+
+Note: Chrome, Opera, IE, Safari - Support the break-inside
+      Fire Fox - not support
+      
+/ *************** Column-Count ****************************** /
