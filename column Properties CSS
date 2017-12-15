@@ -10,12 +10,12 @@ li {
 Note: Chrome, Opera, IE, Safari - Support the break-inside
       Fire Fox - not support
       
-// *************** Column-Count ****************************** //
+************************************** Column-Count **********************************************
 Column-count: 2;
 -webkit-column-count: 2;
 -moz-column-count: 2;
 
-// ******************** Generic break values ************************* //
+********************************* Generic break values *********************************************
 break-after: auto;
 break-after: avoid;
 
