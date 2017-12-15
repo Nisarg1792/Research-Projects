@@ -1,6 +1,6 @@
  Multi Column layout and break down css
 
-/ *************** break-inside ****************************** /
+***************************************** break-inside ********************************************
 li {
 -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
           page-break-inside: avoid; /* Firefox */
@@ -40,3 +40,5 @@ break-after: region;
 break-after: inherit;
 break-after: initial;
 break-after: unset;
+
+**************************************** **************************************************************************
